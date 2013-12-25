@@ -1,0 +1,27 @@
+{
+  "name": "inputlimits",
+  "title": "Input Limits",
+  "description": "Inputlimits is a jQuery plugin to limite the length of chatacters of entered by user in the textarea.",
+  "version": "0.1.0",
+  "homepage": "https://github.com/nicolaszhao/inputlimits",
+  "author": {
+    "name": "Nicolas Zhao",
+    "email": "nicolas-zhao@live.com",
+    "url": "https://github.com/nicolaszhao"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nicolaszhao/inputlimits.git"
+  },
+  "bugs": "https://github.com/nicolaszhao/inputlimits/issues",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/nicolaszhao/inputlimits/blob/master/LICENSE-MIT"
+    }
+  ],
+  "dependencies": {
+    "jquery": "v1.10.2"
+  },
+  "keywords": []
+}
