@@ -1,62 +1,45 @@
-(function($) {
-  /*
-    ======== A Handy Little QUnit Reference ========
-    http://api.qunitjs.com/
-
-    Test methods:
-      module(name, {[setup][ ,teardown]})
-      test(name, callback)
-      expect(numberOfAssertions)
-      stop(increment)
-      start(decrement)
-    Test assertions:
-      ok(value, [message])
-      equal(actual, expected, [message])
-      notEqual(actual, expected, [message])
-      deepEqual(actual, expected, [message])
-      notDeepEqual(actual, expected, [message])
-      strictEqual(actual, expected, [message])
-      notStrictEqual(actual, expected, [message])
-      throws(block, [expected], [message])
-  */
-
-  module('jQuery#inputlimits', {
-    // This will run before each test in this module.
-    setup: function() {
-      this.elems = $('#qunit-fixture').children();
-    }
-  });
-
-  test('is chainable', function() {
-    expect(1);
-    // Not a bad test to run on collection methods.
-    strictEqual(this.elems.inputlimits(), this.elems, 'should be chainable');
-  });
-
-  test('is awesome', function() {
-    expect(1);
-    strictEqual(this.elems.inputlimits().text(), 'awesome0awesome1awesome2', 'should be awesome');
-  });
-
-  module('jQuery.inputlimits');
-
-  test('is awesome', function() {
-    expect(2);
-    strictEqual($.inputlimits(), 'awesome.', 'should be awesome');
-    strictEqual($.inputlimits({punctuation: '!'}), 'awesome!', 'should be thoroughly awesome');
-  });
-
-  module(':inputlimits selector', {
-    // This will run before each test in this module.
-    setup: function() {
-      this.elems = $('#qunit-fixture').children();
-    }
-  });
-
-  test('is awesome', function() {
-    expect(1);
-    // Use deepEqual & .get() when comparing jQuery objects.
-    deepEqual(this.elems.filter(':inputlimits').get(), this.elems.last().get(), 'knows awesome when it sees it');
-  });
-
+( function($) {
+	
+	module('inputlimits: user actions');
+	
+	test('keydown: maximum input limit', function() {
+		
+		// default maxlength is 10
+		var $input = $('.inputlimits-test-input'),
+			text = '1234567890',
+			event;
+		
+		$input.on('keydown', function(event) {
+			if (!$.fn.inputlimits.utils.isDisabledInput(event, 10)) {
+				$(this).val(text + String.fromCharCode(event.which));
+			}
+		});
+		
+		event = $.Event('keydown');
+		event.which = 'a'.charCodeAt(0);
+		$input.val(text).trigger(event);
+		
+		equal($input.val(), '1234567890', 'the value has not changed');
+	});
+	
+	test('keydown: the function keys are active when the length is maximum (such as: backspace, delete, down, right...)', function() {
+		
+		// default maxlength is 10
+		var $input = $('.inputlimits-test-input'),
+			text = '1234567890',
+			event;
+		
+		$input.on('keydown', function(event) {
+			if (!$.fn.inputlimits.utils.isDisabledInput(event, 10)) {
+				$(this).val(text.substring(0, text.length - 1));
+			}
+		});
+		
+		event = $.Event('keydown');
+		event.which = 8;
+		$input.val(text).trigger(event);
+		
+		equal($input.val(), '123456789', 'the value can backspace');
+	});
+	
 }(jQuery));

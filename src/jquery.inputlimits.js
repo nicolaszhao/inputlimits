@@ -64,10 +64,7 @@
 								document.selection.createRange().text.length > 0 : 
 								this.selectionStart != this.selectionEnd;
 								
-					if (this.value.length >= that.options.maxlength && 
-								!$.fn.inputlimits.utils.isFunctionKey(event.which) && 
-								!event.ctrlKey && !event.altKey && !hasSelection) {
-									
+					if ($.fn.inputlimits.utils.isDisabledInput(event, that.options.maxlength)) {
 						event.preventDefault();
 					}
 					
@@ -168,6 +165,22 @@
 			});
 			
 			return ret;
+		},
+		
+		isDisabledInput: function(event, maxlength) {
+			var element = event.target,
+				hasSelection = document.selection ? 
+						document.selection.createRange().text.length > 0 : 
+						element.selectionStart != element.selectionEnd;
+						
+			if (element.value.length >= maxlength && 
+						!this.isFunctionKey(event.which) && 
+						!event.ctrlKey && !event.altKey && !hasSelection) {
+							
+				return true;
+			}
+			
+			return false;
 		}
 	};
 	
