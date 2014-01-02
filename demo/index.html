@@ -19,7 +19,17 @@
 		<script src="../src/jquery.inputlimits.js"></script>
 		<script>
 			$(function() {
-				$('.inputlimits-input').inputlimits();
+				$('.inputlimits-input').inputlimits({
+					change: function(limiter) {
+						var $p = $(this).parent().find('.log');
+						
+						if (!$p.length) {
+							$p = $('<p class="log" />').appendTo($(this).parent());
+						}
+						
+						$p.text(limiter.value);
+					}
+				});
 			});
 		</script>
 	</head>
