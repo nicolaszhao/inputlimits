@@ -60,10 +60,6 @@
 			
 			this.$element.on({
 				keydown: function(event) {
-					var hasSelection = document.selection ? 
-								document.selection.createRange().text.length > 0 : 
-								this.selectionStart != this.selectionEnd;
-								
 					if ($.fn.inputlimits.utils.isDisabledInput(event, that.options.maxlength)) {
 						event.preventDefault();
 					}
@@ -183,7 +179,7 @@
 			var element = event.target,
 				hasSelection = document.selection ? 
 						document.selection.createRange().text.length > 0 : 
-						element.selectionStart != element.selectionEnd;
+						element.selectionStart !== element.selectionEnd;
 						
 			if (element.value.length >= maxlength && 
 						!this.isFunctionKey(event.which) && 
