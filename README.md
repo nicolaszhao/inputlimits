@@ -2,7 +2,7 @@
 
 Inputlimits is a jQuery plugin to limite the length of chatacters of entered by user in the textarea.
 
-**Current version:** [0.2.0]()
+**Current version:** [0.2.0](https://github.com/nicolaszhao/inputlimits/archive/v0.2.0.tar.gz)
 
 ## Usage
 Include jQuery and the plugin on your page. Then select a textarea and call the inputlimits method on DOM ready.
@@ -38,9 +38,9 @@ The text of the number of remaining characters. '{0}' indicate the remaining cha
 Returns: jQuery   
 Set one or more options for the inputlimits.
 	
-	* options
-		Type: Object
-		A map of option-value pairs to set.
+* options
+	Type: Object
+	A map of option-value pairs to set.
 	
 **Code example:**
 	
@@ -57,14 +57,14 @@ When the textarea value is set manually, need to call this method to manually up
 	$('textarea').val('inputlimits').inputlimits('refresh');
 	
 ## Callbacks
-**change(limiter)**  
+**change( limiter )**  
 When the user enters text in a textarea or manually update the text and call `refresh()`, or update maxlength attribute, this method will automatically call. `this` refers to the current textarea element.
 
-	* limiter
-		Type: Object
-		* value
-			Type: String
-			The current text of the textarea.
+* limiter
+	Type: Object
+	* value
+		Type: String
+		The current text of the textarea.
 		
 	
 **Code example:**
