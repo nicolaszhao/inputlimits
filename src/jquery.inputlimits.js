@@ -44,8 +44,8 @@
 		maxlength: 10,
 		showRemainingChars: true,
 		
-		// {0}: remaining chars number
-		remainingCharsText: '({0} characters remaining)',
+		// {0}: remaining chars number, {1}: maxlength number
+		remainingCharsText: '({0} characters remaining, up to {1} characters)',
 		
 		// callback
 		change: null
@@ -68,19 +68,15 @@
 						event.preventDefault();
 					}
 					
-					if (that.options.showRemainingChars) {
-						setTimeout(function() {
+					setTimeout(function() {
+						if (that.value !== event.target.value) {
 							that.refresh();
-						}, 200);
-					}
+						}
+					}, 200);
 				},
 				
 				keyup: function() {
-					var maxlength = that.options.maxlength;
-					
-					if (this.value.length > maxlength) {
-						this.value = this.value.substring(0, maxlength);
-					}
+					that._maxlength();
 				}
 			});
 			
@@ -93,23 +89,14 @@
 		},
 		
 		refresh: function() {
-			var callback = this.options.change;
+			this._maxlength();
+			this._refreshRemaining();
+			this._change();
 			
-			if (this.$helper) {
-				this.$helper.html(this._getRemainingCharsText());
-			}
-			
-			if ($.type(callback) === 'function') {
-				callback.call(this.$element, {
-					text: this.$element.val()
-				});
-			}
+			this.value = this.$element.val();
 		},
 		
 		_refresh: function() {
-			var maxlength = this.options.maxlength,
-				text = this.$element.val();
-			
 			if (this.options.showRemainingChars) {
 				if (!this.$helper) {
 					this.$helper = this._helper();
@@ -121,12 +108,31 @@
 				}
 			}
 			
-			if (text.length > maxlength) {
-				this.$element.val(text.substring(0, maxlength));
+			this._maxlength();
+			this._refreshRemaining();
+			
+			if (this.value !== this.$element.val()) {
+				this._change();
+				this.value = this.$element.val();
 			}
+		},
+		
+		_refreshRemaining: function() {
+			var remainingCharsText = this.options.remainingCharsText
+					.replace('{0}', this.options.maxlength - this.$element.val().length)
+					.replace('{1}', this.options.maxlength);
 			
 			if (this.$helper) {
-				this.$helper.html(this._getRemainingCharsText());
+				this.$helper.html(remainingCharsText);
+			}
+		},
+		
+		_maxlength: function() {
+			var value = this.$element.val(),
+				maxlength = this.options.maxlength;
+				
+			if (value.length > maxlength) {
+				this.$element.val(value.substring(0, maxlength));
 			}
 		},
 		
@@ -134,8 +140,14 @@
 			return $('<div class="inputlimits-helper" />').insertAfter(this.$element);
 		},
 		
-		_getRemainingCharsText: function() {
-			return this.options.remainingCharsText.replace('{0}', this.options.maxlength - this.$element.val().length);
+		_change: function() {
+			var callback = this.options.change;
+			
+			if (typeof callback === 'function') {
+				callback.call(this.$element, {
+					value: this.$element.val()
+				});
+			}
 		}
 	};
 	
